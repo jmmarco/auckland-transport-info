@@ -1,12 +1,32 @@
+
+html, body {
+  height:100%;
+}
+
 body {
   font-family: sans-serif;
   margin: 0;
+  color: #fff;
+}
+
+#app {
+  background: url(../images/a-back.jpg);
+  background-size: cover;
 }
 
 header {
-  background: deepskyblue;
-  border: 2px solid grey;
+  display: flex;
+  border: 2px solid white;
   align-items: center;
+  justify-content: center;
+  height: 80px;
+}
+
+main {
+  height: 800px;
+}
+
+footer {
   height: 80px;
 }
 
@@ -18,7 +38,8 @@ header h1 {
 .flex-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; 
+  justify-content: space-between;
+  overflow-y: scroll;
 }
 
 
