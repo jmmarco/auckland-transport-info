@@ -12,7 +12,7 @@
 
 </head>
 <body>
-  <div id="app"></div>
+  <div id="app" style="height: 1000px;"></div>
   
   <script>
     window.API = {
@@ -75,6 +75,15 @@
       )
     }
 
+
+    function Footer() {
+      return (
+        <footer>
+          <p>Copyright 2018, Juan Martin Marco</p>
+        </footer>
+      )
+    }
+
     class App extends React.Component {
       constructor(props) {
         super(props)
@@ -128,7 +137,7 @@
              ?
               <Loader />
              :
-              <div>
+              <main>
                 {JSON.stringify(this.state.locationType)}
                 <select value={this.state.locationType} onChange={this.handleChange}>
                   <option defaultValue="servicecenter">Service Centers</option>
@@ -144,9 +153,10 @@
                     )
                   })}
                 </div>
-              </div>
+              </main>
               
             }
+            <Footer />  
           </div>
         )
       }
