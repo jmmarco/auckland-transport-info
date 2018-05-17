@@ -8,3 +8,10 @@ Simple open the app from [here](https://jmmarco.github.io/auckland-transport-inf
 
 ## Wait, the app is a single file?
 Yes, the app was built using a single `index.html` and using [the official React UMD production builds](https://reactjs.org/docs/cdn-links.html) that are served via CDN.
+
+## Is this the best way to create a React App?
+Most certainly not. However it's a quick wat to do so. Also, by using simple HTML files embeded with JS you can host them on GitHub pages.
+The "appropiate" way to create a react app is done using [`create-react-app`](https://reactjs.org/docs/add-react-to-a-new-app.html#create-react-app)
+
+## Credits
+CSS Spinner loader courtesy of [Tobias Ahlin](http://tobiasahlin.com/spinkit/)
