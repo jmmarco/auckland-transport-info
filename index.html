@@ -6,8 +6,8 @@
   <title>React NZ Data</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
 </head>
@@ -66,41 +66,84 @@
       )
     }
 
+    function Header() {
+      return (
+        <header>
+          <h1>Auckland Transport Locations Information</h1>
+          <p></p>
+        </header>
+      )
+    }
+
     class App extends React.Component {
       constructor(props) {
         super(props)
         this.state = {
           loading: true,
           data: null,
+          locationType: 'customerservicecentres',
         }
+
+        this.handleChange = this.handleChange.bind(this);
+        this.fetchAndSetData = this.fetchAndSetData.bind(this);
       }
 
       componentDidMount() {
-        API.fetchData('https://api.at.govt.nz/v2/locations/customerservicecentres')
+        this.fetchAndSetData()
+      }
+
+      componentDidUpdate(prevProps, prevState) {
+        console.log(prevState.locationType, this.state.locationType)
+        if (prevState.locationType !== this.state.locationType) {
+          this.fetchAndSetData()
+        }
+
+      }
+
+      fetchAndSetData() {
+        API.fetchData(`https://api.at.govt.nz/v2/locations/${this.state.locationType}`)
         .then((data) => {
           this.setState({
             data: data.response,
             loading: false,
           })
         })
+        .catch((error) => console.log("OH oh"))
       }
+
+      handleChange(event) {
+        this.setState({
+          locationType: event.target.value
+        })
+      }
+
 
       render() {
         const { data, loading } = this.state
+        console.log(this.state.locationType)
         return (
           <div>
-            <h1>NZ Customer Service Centers</h1>
+            <Header />
             {loading
              ?
               <Loader />
              :
-              <div className="flex-container">
-  
-                 {data.map((center) => {
-                  return(
-                    <Center key={center.id} center={center}/>
-                  )
-                 })}
+              <div>
+                {JSON.stringify(this.state.locationType)}
+                <select value={this.state.locationType} onChange={this.handleChange}>
+                  <option defaultValue="servicecenter">Service Centers</option>
+                  <option value="parkinglocations">Parking Locations</option>
+                  <option value="poi">Points of Interest</option>
+                  <option value="scheduledworks">Scheduled Works</option>
+                </select>
+                <div className="flex-container">
+    
+                  {data.map((center) => {
+                    return(
+                      <Center key={center.id} center={center}/>
+                    )
+                  })}
+                </div>
               </div>
               
             }
