@@ -12,7 +12,7 @@
 
 </head>
 <body>
-  <div id="app" style="height: 1000px;"></div>
+  <div id="app"></div>
   
   <script>
     window.API = {
@@ -75,12 +75,19 @@
       )
     }
 
-
     function Footer() {
       return (
         <footer>
-          <p>Copyright 2018, Juan Martin Marco</p>
+          <p>Made with <i class="fas fa-heart"></i> Juan Martin Marco</p>
         </footer>
+      )
+    }
+
+    function Error() {
+      return (
+        <div className="error">
+          <p>It looks like something went wrong when trying to retrieve info for {this.state.locationType}..</p>
+        </div>
       )
     }
 
@@ -95,6 +102,7 @@
 
         this.handleChange = this.handleChange.bind(this);
         this.fetchAndSetData = this.fetchAndSetData.bind(this);
+        this.locationText = this.locationText.bind(this);
       }
 
       componentDidMount() {
@@ -117,18 +125,40 @@
             loading: false,
           })
         })
-        .catch((error) => console.log("OH oh"))
+        .catch((error) => console.log("OH oh", error))
       }
 
       handleChange(event) {
         this.setState({
-          locationType: event.target.value
+          locationType: event.target.value,
+          loading: true
         })
+      }
+
+      locationText(locationType) {
+
+        switch (locationType) {
+          case "customerservicecentres":
+            return "Customer Service Centers"
+            break
+          case "parkinglocations":
+            return "Parking Locations"
+            break
+          case "poi":
+            return "Points of Interest"
+            break
+          case "scheduledworks":
+            return "Schedule Work Areas"
+            break
+          default:
+            return "Customer Service Centers"
+            break
+        }
       }
 
 
       render() {
-        const { data, loading } = this.state
+        const { data, loading,locationType } = this.state
         console.log(this.state.locationType)
         return (
           <div>
@@ -138,16 +168,21 @@
               <Loader />
              :
               <main>
-                {JSON.stringify(this.state.locationType)}
-                <select value={this.state.locationType} onChange={this.handleChange}>
-                  <option defaultValue="servicecenter">Service Centers</option>
-                  <option value="parkinglocations">Parking Locations</option>
-                  <option value="poi">Points of Interest</option>
-                  <option value="scheduledworks">Scheduled Works</option>
-                </select>
+                <div>
+                  <p>Displaying for: {this.locationText(locationType)}</p>
+                </div>
+                <div className="control-box">
+                  <span className="show-me">Show me: </span>
+                  <select value={locationType} onChange={this.handleChange}>
+                    <option defaultValue="customerservicecentres">Service Centers</option>
+                    <option value="parkinglocations">Parking Locations</option>
+                    <option value="poi">Points of Interest</option>
+                    <option value="scheduledworks">Scheduled Works</option>
+                  </select>
+                </div>
                 <div className="flex-container">
     
-                  {data.map((center) => {
+                  {data && data.map((center) => {
                     return(
                       <Center key={center.id} center={center}/>
                     )
