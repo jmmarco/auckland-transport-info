@@ -4,22 +4,27 @@ html, body {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
   font-family: sans-serif;
   margin: 0;
   color: #fff;
-}
-
-#app {
+  min-height: 100vh;
   background: url(../images/a-back.jpg);
   background-size: cover;
 }
 
+#app {
+  height: 1200px;
+}
+
 header {
   display: flex;
-  border: 2px solid white;
   align-items: center;
   justify-content: center;
   height: 80px;
+  background: #fff;
+  color: grey;
 }
 
 main {
@@ -27,19 +32,40 @@ main {
 }
 
 footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   height: 80px;
+  padding: 10px;
+  flex-shrink: 0;
+
 }
 
 header h1 {
   margin: 0;
 }
 
+.control-box {
+  display: flex;
+  align-items: center;
+}
+
+.control-box select {
+  height: 30px;
+  margin-left: 10px;
+}
+
+.fa-heart {
+  color: red;
+} 
+
 
 .flex-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  overflow-y: scroll;
+  overflow: auto;
+  max-height: 80vh;
 }
 
 
@@ -58,6 +84,15 @@ header h1 {
 
 .center-list li i {
   margin-right: 5px;
+}
+
+.error {
+  color: red;
+  letter-spacing: 2px;
+}
+
+.show-me {
+  font-size: 2em;
 }
 
 .sk-cube-grid {
