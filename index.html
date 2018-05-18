@@ -153,7 +153,6 @@
       }
 
       componentDidUpdate(prevProps, prevState) {
-        console.log(prevState.locationType, this.state.locationType)
         if (prevState.locationType !== this.state.locationType) {
           this.fetchAndSetData()
         }
@@ -234,7 +233,6 @@
                   </div>
                   <div className="grid-container">
                     {infoCards && infoCards.map((location) => {
-                      console.log(location)
                       return <LocationCard key={location.id} location={location} locationType={locationType}/>
                     })}
                   </div>
