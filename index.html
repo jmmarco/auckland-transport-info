@@ -6,8 +6,8 @@
   <title>React NZ Data</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-  <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
 </head>
@@ -24,9 +24,15 @@
           'Ocp-Apim-Subscription-Key': '7e90de9bf58c40258156c4a1569ae081'
           })
         })
-        .then((response) => response.json())
+        .then((response) => {
+          if (response.ok) {
+            return response.json()
+          } else {
+            return Promise.reject({status: response.status, response})
+          }
+        })
         .catch((error) => {
-          console.error('Something went wrong: ', error)
+          console.warn('Something went wrong: ', error)
           return null
         })
       }
@@ -52,25 +58,59 @@
       )
     }
 
-    function Center(props) {
-      const { center } = props
-      return (
-        <div className="center-list">
-          <h2>{center.name}</h2>
-          <ul>
-            <li><i className="far fa-building"></i>{center.address}</li>
-            <li><i className="fas fa-phone"></i>{center.phone}</li>
-            <li><i className="fas fa-door-open"></i>{center.openHours}</li>
-          </ul>
-        </div>
-      )
+    function LocationCard(props) {
+      const { location, locationType } = props
+
+      if (locationType == 'customerservicecentres') {
+        return (
+          <div className="card">
+            <h3>{location.name}</h3>
+            <p>Address: {location.address}</p>
+            <p>Phone: {location.phone}</p>
+            {location.hopServices === true ? <p>Hop services: Yes</p> : <p>Hop services: No</p>}
+            <p>Hours: {location.openHours}</p>
+            <p>Suburb: {location.suburb}</p>
+          </div>
+        )
+      } else if (locationType == 'parkinglocations') {
+          return (
+            <div className="card">
+              <h3>Parking Location</h3>
+              <p>Type: {location.type}</p>
+              <p>Address: {location.address}</p>
+              <p>Description: {location.name}</p>
+              {location.mobilitySpaces && <p>Mobility spaces: {location.mobilitySpaces}</p>}
+            </div>
+          )
+      } else if (locationType == 'poi') {
+        return (
+          <div>
+            Poi stuff
+          </div>
+        )
+      } else {
+        return (
+          <div className="card">
+            <h3>Scheduled Work</h3>
+            <p>Type: {location.type}</p>
+            <p>Address: {location.address === '' ? 'No address provided' : location.address}</p>
+            <p>Contractor: {location.contractorCompany}</p>
+            <p>Start Date: {location.startDate}</p>
+            <p>End Date: {location.endDate}</p>
+            <p>Region: {location.region}</p>
+            <p>Suburb: {location.suburb}</p>
+            <p>Description: {location.description}</p>
+          </div>
+        ) 
+      }
+
     }
 
     function Header() {
       return (
         <header>
           <h1>Auckland Transport Locations Information</h1>
-          <p></p>
+          <div><span>About Us</span> | <span>Contact Us</span></div>
         </header>
       )
     }
@@ -78,15 +118,16 @@
     function Footer() {
       return (
         <footer>
-          <p>Made with <i class="fas fa-heart"></i> Juan Martin Marco</p>
+          <p>Made with <i class="fas fa-heart"></i> by Juan Martin Marco</p>
         </footer>
       )
     }
 
-    function Error() {
+    function Error(props) {
+      const { location } = props
       return (
         <div className="error">
-          <p>It looks like something went wrong when trying to retrieve info for {this.state.locationType}..</p>
+          <p>It looks like something went wrong when trying to retrieve info for {location}...</p>
         </div>
       )
     }
@@ -96,13 +137,15 @@
         super(props)
         this.state = {
           loading: true,
-          data: null,
+          infoCards: null,
           locationType: 'customerservicecentres',
+          locationText: '',
+          error: false,
         }
 
-        this.handleChange = this.handleChange.bind(this);
-        this.fetchAndSetData = this.fetchAndSetData.bind(this);
-        this.locationText = this.locationText.bind(this);
+        this.handleChange = this.handleChange.bind(this)
+        this.fetchAndSetData = this.fetchAndSetData.bind(this)
+        this.locationText = this.locationText.bind(this)
       }
 
       componentDidMount() {
@@ -119,13 +162,19 @@
 
       fetchAndSetData() {
         API.fetchData(`https://api.at.govt.nz/v2/locations/${this.state.locationType}`)
-        .then((data) => {
+        .then((data) => { 
+
           this.setState({
-            data: data.response,
+            infoCards: data.response,
             loading: false,
           })
         })
-        .catch((error) => console.log("OH oh", error))
+        .catch((error) => {
+          alert("OH oh!")
+          this.setState({
+            error: true
+          })
+        })
       }
 
       handleChange(event) {
@@ -156,42 +205,47 @@
         }
       }
 
-
       render() {
-        const { data, loading,locationType } = this.state
-        console.log(this.state.locationType)
+        const { infoCards, loading, locationType } = this.state
+
+        console.log(infoCards)
+        
+
+        if (this.state.error) {
+          return <Error location={this.locationText(locationType)} />
+        }
+
         return (
           <div>
             <Header />
-            {loading
-             ?
-              <Loader />
-             :
-              <main>
+            <main>
+              { loading
+                ?
+                <Loader />
+                :
                 <div>
-                  <p>Displaying for: {this.locationText(locationType)}</p>
+                  <div>
+                    <h2>Displaying info cards for: {this.locationText(locationType)}</h2>
+                  </div>
+                  <div className="control-box">
+                    <span className="show-me">Show me: </span>
+                    <select value={locationType} onChange={this.handleChange}>
+                      <option defaultValue="customerservicecentres">Service Centers</option>
+                      <option value="parkinglocations">Parking Locations</option>
+                      <option value="poi">Points of Interest</option>
+                      <option value="scheduledworks">Scheduled Works</option>
+                    </select>
+                  </div>
+                  <div className="grid-container">
+                    {infoCards && infoCards.map((location) => {
+                      console.log(location)
+                      return <LocationCard key={location.id} location={location} locationType={locationType}/>
+                    })}
+                  </div>
                 </div>
-                <div className="control-box">
-                  <span className="show-me">Show me: </span>
-                  <select value={locationType} onChange={this.handleChange}>
-                    <option defaultValue="customerservicecentres">Service Centers</option>
-                    <option value="parkinglocations">Parking Locations</option>
-                    <option value="poi">Points of Interest</option>
-                    <option value="scheduledworks">Scheduled Works</option>
-                  </select>
-                </div>
-                <div className="flex-container">
-    
-                  {data && data.map((center) => {
-                    return(
-                      <Center key={center.id} center={center}/>
-                    )
-                  })}
-                </div>
-              </main>
-              
-            }
-            <Footer />  
+              }
+            </main>
+            {/*<Footer />*/}
           </div>
         )
       }
