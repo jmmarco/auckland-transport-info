@@ -19,6 +19,11 @@ header {
   height: 80px;
 }
 
+header a {
+  text-decoration: none;
+  color: grey;
+}
+
 main {
   padding: 10px;
 }

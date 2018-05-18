@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>React NZ Data</title>
+  <title>Auckland Transport Locations Info</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
   <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
@@ -110,7 +110,7 @@
       return (
         <header>
           <h1>Auckland Transport Locations Information</h1>
-          <div><span>About Us</span> | <span>Contact Us</span></div>
+          <div><span>Made with <i class="far fa-heart"></i> by <a href="https://juanmarco.me/">Juan Marco</a></span> | <span>Contact Me</span></div>
         </header>
       )
     }
@@ -170,7 +170,6 @@
           })
         })
         .catch((error) => {
-          alert("OH oh!")
           this.setState({
             error: true
           })
@@ -207,9 +206,6 @@
 
       render() {
         const { infoCards, loading, locationType } = this.state
-
-        console.log(infoCards)
-        
 
         if (this.state.error) {
           return <Error location={this.locationText(locationType)} />
