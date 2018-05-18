@@ -15,13 +15,14 @@ header {
   justify-content: space-between;
   align-items: center;
   background: #fff;
+  color: grey;  
   padding: 0 20px 0 20px;
   height: 80px;
 }
 
 header a {
   text-decoration: none;
-  color: grey;
+
 }
 
 main {
