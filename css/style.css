@@ -1,99 +1,69 @@
-
 html, body {
-  height:100%;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  font-family: sans-serif;
+  background: url(../images/a-back.jpg) no-repeat center 30% fixed / cover;
+  font-family: Arial, Helvetica, sans-serif;
   margin: 0;
-  color: #fff;
-  min-height: 100vh;
-  background: url(../images/a-back.jpg);
-  background-size: cover;
 }
 
-#app {
-  height: 1200px;
-}
-
-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 80px;
-  background: #fff;
-  color: grey;
-}
-
-main {
-  height: 800px;
-}
-
-footer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  height: 80px;
-  padding: 10px;
-  flex-shrink: 0;
-
-}
+#
 
 header h1 {
   margin: 0;
 }
 
-.control-box {
+header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  background: #fff;
+  padding: 0 20px 0 20px;
+  height: 80px;
 }
 
-.control-box select {
-  height: 30px;
-  margin-left: 10px;
+main {
+  padding: 10px;
+}
+
+.grid-container {
+
+}
+
+.card {
+  display: inline-block;
+  background: #fff;
+  border-radius: 5px;
+  width: 30%;
+  height: 250px;
+  color: grey;
+  margin: 10px;
+  padding: 10px;
+  overflow-y: auto;
+  cursor: pointer;
 }
 
 .fa-heart {
   color: red;
 } 
 
-
-.flex-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  overflow: auto;
-  max-height: 80vh;
-}
-
-
-.center-list {
-  border: 2px solid grey;
-  border-radius: 5px;
-  margin: 5px;
-  width: 250px;
-  padding: 10px;
-}
-
-.center-list ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-.center-list li i {
-  margin-right: 5px;
-}
-
 .error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: red;
   letter-spacing: 2px;
-}
-
-.show-me {
   font-size: 2em;
 }
+
+.control-box {
+  display: flex;
+  font-size: 2em;
+  align-items: center;
+}
+
+.control-box select {
+  height: 30px;
+}
+
+/* Spinner CSS */
 
 .sk-cube-grid {
   width: 200px;
