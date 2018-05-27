@@ -57,12 +57,21 @@ main {
 } 
 
 .error {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   color: red;
   letter-spacing: 2px;
   font-size: 2em;
+  line-height: 1em;
+  width: 30%;
+  margin: auto;
+}
+
+.error p a {
+  text-decoration: none;
+  color: red;
+}
+
+.error p a:hover {
+  color: #7FB3D5;
 }
 
 .control-box {
