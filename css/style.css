@@ -22,6 +22,8 @@ header {
   color: grey;  
   padding: 0 20px 0 20px;
   height: 80px;
+  font-weight: 600;
+  box-shadow: 0 3px 4px 0 rgba(0,0,0,.16)
 }
 
 header a {
