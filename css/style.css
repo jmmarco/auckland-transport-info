@@ -39,8 +39,24 @@ main {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-
+  position: relative;
 }
+
+/* .about-float-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 120px;
+  position: fixed;
+  background: rgba(52, 146, 175, 0.16);
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding: 5px;
+  top: 200px;
+  left: 10px;
+  font-weight: 400px;
+} */
 
 .card {
   flex: 0 200px;
